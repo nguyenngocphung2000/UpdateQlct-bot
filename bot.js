@@ -10,7 +10,7 @@ function doPost(e) {
   if (text.startsWith("/start")) {
     sendMessage(
       chatId,
-      `Chào mừng bạn đến với ứng dụng quản lý tài chính cá nhân!\n\nHướng dẫn sử dụng:\n\n1. Thêm giao dịch:\n   Nhập theo cú pháp: <số tiền> <thu/chi> <mô tả>.\n\n2. Xem báo cáo:\n   - /report: Báo cáo tổng.\n   - /report mm/yyyy: Báo cáo tháng.\n   - /report dd/mm/yyyy: Báo cáo tuần (hiển thị tuần có ngày được chọn).\n   - Thêm "az" hoặc "za" sau lệnh để sắp xếp:\n     Ví dụ: /report az hoặc /report mm/yyyy za.\n\n3. Hủy giao dịch gần nhất:\n   - /undo: Xóa giao dịch gần nhất.\n\n4. Xóa toàn bộ dữ liệu:\n   - /reset: Xóa tất cả dữ liệu trên bảng tính.\n`
+      `Chào mừng bạn đến với ứng dụng quản lý tài chính cá nhân by Phụng!\n\nHướng dẫn sử dụng:\n\n1. Thêm giao dịch:\n   Nhập theo cú pháp: <số tiền> <thu/chi> <mô tả>.\n\n2. Xem báo cáo:\n   - /report: Báo cáo tổng.\n   - /report mm/yyyy: Báo cáo tháng.\n   - /report dd/mm/yyyy: Báo cáo tuần (hiển thị tuần có ngày được chọn).\n   - Thêm "az" hoặc "za" sau lệnh để sắp xếp:\n     Ví dụ: /report az hoặc /report mm/yyyy za.\n\n3. Hủy giao dịch gần nhất:\n   - /undo: Xóa giao dịch gần nhất.\n\n4. Xóa toàn bộ dữ liệu:\n   - /reset: Xóa tất cả dữ liệu trên bảng tính.\n`
     );
   } else if (text.startsWith("/report")) {
     handleReport(chatId, text);
