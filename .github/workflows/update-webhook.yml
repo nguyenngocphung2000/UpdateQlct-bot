@@ -16,3 +16,15 @@ jobs:
     - name: Set Telegram Webhook
       run: |
         curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/setWebhook?url=${{ secrets.GOOGLE_APPS_SCRIPT_URL }}"
+        echo "Webhook has been set successfully."
+
+    - name: Reload Webhook
+      run: |
+        curl -X GET "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/getWebhookInfo"
+        echo "Reloaded the webhook settings."
+
+    - name: Notify Telegram Update
+      run: |
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+        -d "chat_id=${{ secrets.NOTIFICATION_CHAT_ID }}" \
+        -d "text=Webhook has been updated and reloaded successfully for the bot."
