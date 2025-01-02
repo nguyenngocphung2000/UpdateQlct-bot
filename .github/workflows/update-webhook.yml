@@ -1,0 +1,18 @@
+name: Update Telegram Webhook
+
+on:
+  push:
+    branches:
+      - main  # Chạy khi bạn cập nhật vào nhánh `main`
+
+jobs:
+  set-webhook:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set Telegram Webhook
+      run: |
+        curl -X POST "https://api.telegram.org/bot${{ secrets. 7751817961:AAFqeVrH5od4p8tPW8TCQ_FeO7YPXCm2rPo }}/setWebhook?url=${{ secrets. https://script.google.com/macros/s/AKfycbzdgWNYFihtkiG0czd0bZ7tP8pciIoCCLliEEa-YJof1ofGc2EdBv07XjP4GyNjIPajrQ/exec }}"
