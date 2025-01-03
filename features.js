@@ -1,10 +1,14 @@
 const SHEET_ID = "1xsW3Q3PRqbGqTW5NI7ObKY8FUyrT4O-RN8yYGiKtBEo";
 
-function processCommand(chatId, text) {
+function doPost(e) {
+  const { message } = JSON.parse(e.postData.contents);
+  const chatId = message.chat.id;
+  const text = message.text;
+
   if (text.startsWith("/start")) {
     sendMessage(
       chatId,
-      `Chào bạn nha @@!\n\nHướng dẫn sử dụng:\n\n1. Thêm giao dịch:\n   Nhập theo cú pháp: <số tiền> <thu/chi> <mô tả>.\n\n2. Xem báo cáo:\n   - /report: Báo cáo tổng.\n   - /report mm/yyyy: Báo cáo tháng.\n   - /report dd/mm/yyyy: Báo cáo tuần (hiển thị tuần có ngày được chọn).\n   - Thêm "az" hoặc "za" sau lệnh để sắp xếp:\n     Ví dụ: /report az hoặc /report mm/yyyy za.\n\n3. Hủy giao dịch gần nhất:\n   - /undo: Xóa giao dịch gần nhất.\n\n4. Xóa toàn bộ dữ liệu:\n   - /reset: Xóa tất cả dữ liệu trên bảng tính.\n`
+      `Chào mừng bạn đến với ứng dụng quản lý tài chính cá nhân!\n\nHướng dẫn sử dụng:\n\n1. Thêm giao dịch:\n   Nhập theo cú pháp: <số tiền> <thu/chi> <mô tả>.\n\n2. Xem báo cáo:\n   - /report: Báo cáo tổng.\n   - /report mm/yyyy: Báo cáo tháng.\n   - /report dd/mm/yyyy: Báo cáo tuần (hiển thị tuần có ngày được chọn).\n   - Thêm "az" hoặc "za" sau lệnh để sắp xếp:\n     Ví dụ: /report az hoặc /report mm/yyyy za.\n\n3. Hủy giao dịch gần nhất:\n   - /undo: Xóa giao dịch gần nhất.\n\n4. Xóa toàn bộ dữ liệu:\n   - /reset: Xóa tất cả dữ liệu trên bảng tính.\n`
     );
   } else if (text.startsWith("/report")) {
     handleReport(chatId, text);
@@ -17,7 +21,6 @@ function processCommand(chatId, text) {
   }
 }
 
-// Xử lý giao dịch
 function handleTransaction(chatId, text) {
   const [amount, type, ...desc] = text.split(" ");
   if (!isValidAmount(amount) || !["thu", "chi"].includes(type.toLowerCase())) {
@@ -35,7 +38,6 @@ function handleTransaction(chatId, text) {
   sendMessage(chatId, `Đã thêm giao dịch:\nSố tiền: ${amount}\nLoại: ${type}\nMô tả: ${desc.join(" ")}`);
 }
 
-// Xử lý báo cáo
 function handleReport(chatId, text) {
   const dateRegex = /\d{2}\/\d{4}|\d{2}\/\d{2}\/\d{4}/;
   const dateParam = text.match(dateRegex)?.[0];
@@ -129,7 +131,6 @@ function generateReport(chatId, filter, dateParam, sortOrder) {
   sendMessage(chatId, report);
 }
 
-// Xóa toàn bộ dữ liệu
 function resetSheet(chatId) {
   const sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
   sheet.clear();
@@ -137,7 +138,6 @@ function resetSheet(chatId) {
   sendMessage(chatId, "Đã xóa toàn bộ dữ liệu.");
 }
 
-// Hoàn tác giao dịch gần nhất
 function undoLast(chatId) {
   const sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
   const lastRow = sheet.getLastRow();
@@ -149,7 +149,6 @@ function undoLast(chatId) {
   }
 }
 
-// Các hàm tiện ích
 function isValidDate(date, filter, now) {
   if (filter === "month") {
     return (
@@ -195,11 +194,9 @@ function formatCurrency(amount) {
 }
 
 function sendMessage(chatId, text) {
-  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-  const payload = { chat_id: chatId, text: text };
-  UrlFetchApp.fetch(url, {
+  UrlFetchApp.fetch(`${API_URL}/sendMessage`, {
     method: "post",
     contentType: "application/json",
-    payload: JSON.stringify(payload),
+    payload: JSON.stringify({ chat_id: chatId, text }),
   });
 }
