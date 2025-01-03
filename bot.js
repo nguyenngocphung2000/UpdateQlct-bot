@@ -1,7 +1,3 @@
-const TOKEN = "7751817961:AAFqeVrH5od4p8tPW8TCQ_FeO7YPXCm2rPo";
-const API_URL = `https://api.telegram.org/bot${TOKEN}`;
-const SHEET_ID = "1xsW3Q3PRqbGqTW5NI7ObKY8FUyrT4O-RN8yYGiKtBEo";
-
 function doPost(e) {
   const { message } = JSON.parse(e.postData.contents);
   const chatId = message.chat.id;
@@ -86,7 +82,6 @@ function generateReport(chatId, filter, dateParam, sortOrder) {
   let [income, expense] = [0, 0];
 
   filteredData.forEach(([date, type, amount, desc]) => {
-    // Thay đổi định dạng ngày giờ theo yêu cầu "hh:mm dd/mm/yyyy"
     const formattedReportDate = new Date(date).toLocaleString("vi-VN", {
       hour: "2-digit",
       minute: "2-digit",
@@ -202,4 +197,5 @@ function sendMessage(chatId, text) {
     contentType: "application/json",
     payload: JSON.stringify({ chat_id: chatId, text }),
   });
+}
 }
